@@ -54,13 +54,19 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   
+  
+  #currentFib  <- reactive({ fib(as.numeric(input$n)) })
+  
+  dat <- reactive({filter(absences_2, district_name == input$school_district)})
+  
+  
   #absences_2$enrollments <- as.numeric(absences_2$enrollments)
   #absences_2$absent_21_plus <- as.numeric(absences_2$absent_21_plus)
    
    output$test <- renderTable({
       # generate bins based on input$bins from ui.R
-      test  <- filter(absences_2, district_name == input$school_district)
-      test <- rename(test, "absent_21_plus" = "absent_21_days_or_over")
+      #test  <- filter(absences_2, district_name == input$school_district)
+      test <- rename(dat, "absent_21_plus" = "absent_21_days_or_over")
       test <- select(test, 2, 4:6)
       test$enrollments <- as.numeric(test$enrollments)
       test$absent_21_plus <- as.numeric(test$absent_21_plus)
@@ -70,14 +76,14 @@ server <- function(input, output) {
       
    })
    
-   output$avg_abs <- renderTable({
+   #output$avg_abs <- renderTable({
      
-  avg_abs <- filter(test, district_name == input$school_district)
-  avg_abs <- group_by(avg_abs, district_name)
-  avg_abs <- summarise(avg_abs, mean = mean('percent', na.rm = TRUE))
+  #avg_abs <- filter(test, district_name == input$school_district)
+  #avg_abs <- group_by(avg_abs, district_name)
+  #avg_abs <- summarise(avg_abs, mean = mean('percent', na.rm = TRUE))
      
-  avg_abs
-   })
+  #avg_abs
+   #})
 }
 
 # Run the application 
