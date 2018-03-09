@@ -43,7 +43,8 @@ ui <- fluidPage(
       mainPanel(
          
         tabsetPanel(type = "tabs",
-                    tabPanel("Data", tableOutput("test"))
+                    tabPanel("Data", tableOutput("test")),
+                    tabPanel("Absences", tableOutput("avg_abs"))
                     
         
       )
@@ -52,6 +53,9 @@ ui <- fluidPage(
 )
 # Define server logic required to draw a histogram
 server <- function(input, output) {
+  
+  #absences_2$enrollments <- as.numeric(absences_2$enrollments)
+  #absences_2$absent_21_plus <- as.numeric(absences_2$absent_21_plus)
    
    output$test <- renderTable({
       # generate bins based on input$bins from ui.R
@@ -64,6 +68,15 @@ server <- function(input, output) {
       
       
       
+   })
+   
+   output$avg_abs <- renderTable({
+     
+  avg_abs <- filter(test, district_name == input$school_district)
+  avg_abs <- group_by(avg_abs, district_name)
+  avg_abs <- summarise(avg_abs, mean = mean('percent', na.rm = TRUE))
+     
+  avg_abs
    })
 }
 
