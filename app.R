@@ -66,7 +66,7 @@ server <- function(input, output) {
       test$absent_21_plus <- as.numeric(test$absent_21_plus)
       test <- mutate(test, percent = absent_21_plus / enrollments)
       
-      
+      test
       
    })
    
