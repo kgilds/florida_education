@@ -95,8 +95,9 @@ server <- function(input, output) {
    output$avg_abs <- renderTable({
      
   avg_abs <- dataInput()
+  avg_abs$enrollments <- as.numeric(avg_abs$enrollments)
   avg_abs <- group_by(avg_abs, district_name)
-  avg_abs <- summarise(avg_abs, mean = mean('enrollments', na.rm = TRUE))
+  avg_abs <- summarise(avg_abs, mean = mean(percent, na.rm = TRUE))
      
   
   
