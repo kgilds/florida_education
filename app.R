@@ -88,7 +88,7 @@ server <- function(input, output) {
       test <- dataInput()
       
       
-      
+      test
       
    })
    
