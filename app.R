@@ -52,7 +52,8 @@ ui <- fluidPage(
          
         tabsetPanel(type = "tabs",
                     tabPanel("Data", tableOutput("test")),
-                    tabPanel("Absences", tableOutput("avg_abs"))
+                    tabPanel("Averages by District", tableOutput("avg_abs")),
+                    tabPanel("Averages by School", tableOutput("s_avg_abs"))
                     
         
       )
@@ -102,6 +103,17 @@ server <- function(input, output) {
   
   
    })
+   
+  output$s_avg_abs <- renderTable({
+    
+    s_avg_abs <- dataInput()
+    s_avg_abs <- group_by(s_avg_abs, school_name)
+    s_avg_abs <- summarise(s_avg_abs, mean = mean(percent, na.rm = TRUE))
+  
+    
+  })
+   
+   
 }
 
 # Run the application 
