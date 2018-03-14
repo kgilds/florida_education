@@ -52,7 +52,7 @@ ui <- fluidPage(
          
         tabsetPanel(type = "tabs",
                     tabPanel("Data", tableOutput("test")),
-                    tabPanel("Averages by District", tableOutput("avg_abs")),
+                    tabPanel("Averages by Districtgit ", tableOutput("avg_abs")),
                     tabPanel("Averages by School", tableOutput("s_avg_abs"))
                     
         
