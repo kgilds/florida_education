@@ -55,7 +55,8 @@ ui <- fluidPage(
                     tabPanel("Averages by District ", tableOutput("avg_abs")),
                     tabPanel("Averages by School", tableOutput("s_avg_abs")),
                     tabPanel("Elementary Schools", tableOutput("elem")),
-                    tabPanel("Middle Schools", tableOutput("middle"))
+                    tabPanel("Middle Schools", tableOutput("middle")),
+                    tabPanel("High Schools", tableOutput("high"))
                     
         
       )
@@ -124,6 +125,12 @@ server <- function(input, output) {
   output$middle <- renderTable({
     dat1 <- dataInput()
     middle <- dat1[grep("MIDDLE", dat1$school_name, ignore.case = TRUE, fixed = TRUE),]
+  })
+  
+  output$high <- renderTable({
+    dat2 <- dataInput()
+    high <- dat2[grep("HIGH", dat2$school_name, ignore.case = TRUE, fixed = TRUE),]
+    
   })
    
 }
