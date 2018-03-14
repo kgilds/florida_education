@@ -52,8 +52,10 @@ ui <- fluidPage(
          
         tabsetPanel(type = "tabs",
                     tabPanel("Data", tableOutput("test")),
-                    tabPanel("Averages by Districtgit ", tableOutput("avg_abs")),
-                    tabPanel("Averages by School", tableOutput("s_avg_abs"))
+                    tabPanel("Averages by District ", tableOutput("avg_abs")),
+                    tabPanel("Averages by School", tableOutput("s_avg_abs")),
+                    tabPanel("Elementary Schools", tableOutput("elem")),
+                    tabPanel("Middle Schools", tableOutput("middle"))
                     
         
       )
@@ -113,6 +115,16 @@ server <- function(input, output) {
     
   })
    
+  output$elem <- renderTable({
+    dat <- dataInput()
+    elem <- dat[grep("ELEMENTARY ", dat$school_name, ignore.case = TRUE, fixed = TRUE),]
+      
+  })
+  
+  output$middle <- renderTable({
+    dat1 <- dataInput()
+    middle <- dat1[grep("MIDDLE", dat1$school_name, ignore.case = TRUE, fixed = TRUE),]
+  })
    
 }
 
