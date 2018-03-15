@@ -8,10 +8,12 @@
 #
 
 library(shiny)
+library(shinyLP)
 library(tidyverse)
 library(readxl)
 library(httr)
 library(janitor)
+
 
 
 url <- 'http://www.fldoe.org/core/fileparse.php/7584/urlt/1516ABS21DAYSchool.xls'
@@ -35,11 +37,38 @@ absences_2 <- mutate(absences_2, percent = absent_21_plus / enrollments)
 
 
 # Define UI for application that draws a histogram
+
+
 ui <- fluidPage(
+  
+  navbarPage("Florida School Absences",
+  
+  tabPanel("About",
+  wells("tell me")    
+           ),
+ 
+  tabPanel("Data",
+           
+           tabsetPanel(type = "tabs",
+                       tabPanel("All Schools", tableOutput("test")),
+                       tabPanel("Elementary Schools", tableOutput("elem")),
+                       tabPanel("Middle Schools", tableOutput("middle")),
+                       tabPanel("High Schools", tableOutput("high"))
+                       
+           )
+          
+  ),
+          
+ 
+ 
+ 
+          
    
-   # Application title
-   titlePanel("Florida School Absences"),
-   
+ 
+  
+  
+  
+  
    # Sidebar with a slider input for number of bins 
    sidebarLayout(
       sidebarPanel(
@@ -48,18 +77,8 @@ ui <- fluidPage(
                      c(unique(as.character(absences_2$district_name))))),
       
       # Show a plot of the generated distribution
-      mainPanel(
-         
-        tabsetPanel(type = "tabs",
-                    tabPanel("Data", tableOutput("test")),
-                    tabPanel("Averages by District ", tableOutput("avg_abs")),
-                    tabPanel("Averages by School", tableOutput("s_avg_abs")),
-                    tabPanel("Elementary Schools", tableOutput("elem")),
-                    tabPanel("Middle Schools", tableOutput("middle")),
-                    tabPanel("High Schools", tableOutput("high"))
-                    
-        
-      )
+      
+       
    )
 )
 )
