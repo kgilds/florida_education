@@ -52,7 +52,11 @@ ui <- fluidPage(
          
         tabsetPanel(type = "tabs",
                     tabPanel("Data", tableOutput("test")),
-                    tabPanel("Absences", tableOutput("avg_abs"))
+                    tabPanel("Averages by District ", tableOutput("avg_abs")),
+                    tabPanel("Averages by School", tableOutput("s_avg_abs")),
+                    tabPanel("Elementary Schools", tableOutput("elem")),
+                    tabPanel("Middle Schools", tableOutput("middle")),
+                    tabPanel("High Schools", tableOutput("high"))
                     
         
       )
@@ -102,6 +106,33 @@ server <- function(input, output) {
   
   
    })
+   
+  output$s_avg_abs <- renderTable({
+    
+    s_avg_abs <- dataInput()
+    s_avg_abs <- group_by(s_avg_abs, school_name)
+    s_avg_abs <- summarise(s_avg_abs, mean = mean(percent, na.rm = TRUE))
+  
+    
+  })
+   
+  output$elem <- renderTable({
+    dat <- dataInput()
+    elem <- dat[grep("ELEMENTARY ", dat$school_name, ignore.case = TRUE, fixed = TRUE),]
+      
+  })
+  
+  output$middle <- renderTable({
+    dat1 <- dataInput()
+    middle <- dat1[grep("MIDDLE", dat1$school_name, ignore.case = TRUE, fixed = TRUE),]
+  })
+  
+  output$high <- renderTable({
+    dat2 <- dataInput()
+    high <- dat2[grep("HIGH", dat2$school_name, ignore.case = TRUE, fixed = TRUE),]
+    
+  })
+   
 }
 
 # Run the application 
