@@ -116,7 +116,9 @@ server <- function(input, output) {
       test <- dataInput()
       
       
-      test
+      arrange(test, desc(percent))
+      
+      #arrange(flights, year, month, day)
       
    })
    
@@ -144,17 +146,21 @@ server <- function(input, output) {
     dat <- dataInput()
     elem <- dat[grep("ELEMENTARY ", dat$school_name, ignore.case = TRUE, fixed = TRUE),]
       
+    arrange(elem, desc(percent))
   })
   
   output$middle <- renderTable({
     dat1 <- dataInput()
     middle <- dat1[grep("MIDDLE", dat1$school_name, ignore.case = TRUE, fixed = TRUE),]
-  })
+  
+    arrange(middle, desc(percent))
+    })
   
   output$high <- renderTable({
     dat2 <- dataInput()
     high <- dat2[grep("HIGH", dat2$school_name, ignore.case = TRUE, fixed = TRUE),]
     
+    arrange(high, desc(percent))
   })
    
 }
