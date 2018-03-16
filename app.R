@@ -13,6 +13,7 @@ library(tidyverse)
 library(readxl)
 library(httr)
 library(janitor)
+library(formattable)
 
 
 
@@ -34,6 +35,7 @@ absences_2$enrollments <- as.numeric(absences_2$enrollments)
 absences_2$absent_21_plus <- as.numeric(absences_2$absent_21_plus)
 absences_2 <- mutate(absences_2, percent = absent_21_plus / enrollments)
 
+meta <- read_excel(absences, range = "A1:A2")
 
 
 # Define UI for application that draws a histogram
@@ -44,7 +46,23 @@ ui <- fluidPage(
   navbarPage("Florida School Absences",
   
   tabPanel("About",
-  wells("tell me")    
+           
+           list_group("Kevin", "Kevin"),
+           shinyLP::panel_div(),
+           
+           wells("This Application takes a static spreadsheet file from a website and makes it dynamic. The spreadsheet file is from the Florida Department of Education and it is a survey of school enrollments and a count of students who missed 21 days or more of school during the 2015-2016 School year"),
+  
+           mainPanel(
+             
+             tableOutput("meta")
+             
+             #jumbotron("Florida School Absences: 21 days or more", "This")  
+             
+           )
+           
+           
+           
+             
            ),
  
   tabPanel("Data",
@@ -107,7 +125,11 @@ server <- function(input, output) {
   })
   
   
-
+  output$meta <- renderTable({
+    
+    meta
+    
+  })
    
    output$test <- renderTable({
       # generate bins based on input$bins from ui.R
@@ -115,6 +137,7 @@ server <- function(input, output) {
      
       test <- dataInput()
       
+      #test$percent <- percent(test$percent)
       
       arrange(test, desc(percent))
       
