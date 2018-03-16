@@ -49,6 +49,17 @@ ui <- fluidPage(
  
   tabPanel("Data",
            
+           # Sidebar with a slider input for number of bins 
+           sidebarLayout(
+             sidebarPanel(
+               selectInput("school_district",
+                           "School District",
+                           c(unique(as.character(absences_2$district_name))))),
+             
+           
+                   
+           mainPanel(
+           
            tabsetPanel(type = "tabs",
                        tabPanel("All Schools", tableOutput("test")),
                        tabPanel("Elementary Schools", tableOutput("elem")),
@@ -57,9 +68,9 @@ ui <- fluidPage(
                        
            )
           
-  ),
+  )
           
- 
+  )
  
  
           
@@ -69,13 +80,7 @@ ui <- fluidPage(
   
   
   
-   # Sidebar with a slider input for number of bins 
-   sidebarLayout(
-      sidebarPanel(
-         selectInput("school_district",
-                     "School District",
-                     c(unique(as.character(absences_2$district_name))))),
-      
+   
       # Show a plot of the generated distribution
       
        
