@@ -8,10 +8,13 @@
 #
 
 library(shiny)
+library(shinyLP)
 library(tidyverse)
 library(readxl)
 library(httr)
 library(janitor)
+library(formattable)
+
 
 
 url <- 'http://www.fldoe.org/core/fileparse.php/7584/urlt/1516ABS21DAYSchool.xls'
@@ -31,38 +34,74 @@ absences_2 <- select(absences_2, 2, 4:6)
 absences_2$enrollments <- as.numeric(absences_2$enrollments)
 absences_2$absent_21_plus <- as.numeric(absences_2$absent_21_plus)
 absences_2 <- mutate(absences_2, percent = absent_21_plus / enrollments)
+absences_2 <- mutate(absences_2, percent = percent *100)
 
+meta <- read_excel(absences, range = "A1:A2")
 
 
 # Define UI for application that draws a histogram
+
+
 ui <- fluidPage(
-   
-   # Application title
-   titlePanel("Florida School Absences"),
-   
-   # Sidebar with a slider input for number of bins 
-   sidebarLayout(
-      sidebarPanel(
-         selectInput("school_district",
-                     "School District",
-                     c(unique(as.character(absences_2$district_name))))),
-      
-      # Show a plot of the generated distribution
-      mainPanel(
-         
-        tabsetPanel(type = "tabs",
-                    tabPanel("Data", tableOutput("test")),
-                    tabPanel("Averages by District ", tableOutput("avg_abs")),
-                    tabPanel("Averages by School", tableOutput("s_avg_abs")),
-                    tabPanel("Elementary Schools", tableOutput("elem")),
-                    tabPanel("Middle Schools", tableOutput("middle")),
-                    tabPanel("High Schools", tableOutput("high"))
-                    
-        
-      )
-   )
-)
-)
+  
+  navbarPage("Florida School Absences",
+  
+  tabPanel("About",
+           
+           #list_group("Kevin", "Kevin"),
+           
+           shinyLP::panel_div(class_type= "primary", panel_title = "About", content = "This Application takes a static spreadsheet file from a website and makes it dynamic. The spreadsheet file is from the Florida Department of Education and it is a survey of school enrollments and a count of students who missed 21 days or more of school during the 2015-2016 School year"),
+           
+           panel_div(class_type = "primary", panel_title = "How to use", content = "More information")
+           
+           ),
+           
+          
+          
+  
+  tabPanel("Data",
+           
+           fluidPage(
+             
+           # Sidebar with a slider input for number of bins 
+           sidebarLayout(
+             sidebarPanel(
+               selectInput("school_district",
+                           "School District",
+                           c(unique(as.character(absences_2$district_name))))),
+             
+             mainPanel(
+               
+               tabsetPanel(type = "tabs",
+                           tabPanel("All Schools", tableOutput("test")),
+                           tabPanel("Elementary Schools", tableOutput("elem")),
+                           tabPanel("Middle Schools", tableOutput("middle")),
+                           tabPanel("High Schools", tableOutput("high"))
+                           
+               )#tabsetpanels
+               
+           
+           
+             
+             ) #mainPanel 2
+             
+           )#fluidpage 
+           
+ 
+  
+  )
+          
+    )
+) 
+ 
+          
+       
+    )
+ 
+
+
+
+
 
 
 
@@ -83,7 +122,11 @@ server <- function(input, output) {
   })
   
   
-
+  output$meta <- renderTable({
+    
+    meta
+    
+  })
    
    output$test <- renderTable({
       # generate bins based on input$bins from ui.R
@@ -91,8 +134,11 @@ server <- function(input, output) {
      
       test <- dataInput()
       
+      #test$percent <- percent(test$percent)
       
-      test
+      arrange(test, desc(percent))
+      
+      #arrange(flights, year, month, day)
       
    })
    
@@ -120,17 +166,21 @@ server <- function(input, output) {
     dat <- dataInput()
     elem <- dat[grep("ELEMENTARY ", dat$school_name, ignore.case = TRUE, fixed = TRUE),]
       
+    arrange(elem, desc(percent))
   })
   
   output$middle <- renderTable({
     dat1 <- dataInput()
     middle <- dat1[grep("MIDDLE", dat1$school_name, ignore.case = TRUE, fixed = TRUE),]
-  })
+  
+    arrange(middle, desc(percent))
+    })
   
   output$high <- renderTable({
     dat2 <- dataInput()
-    high <- dat2[grep("HIGH", dat2$school_name, ignore.case = TRUE, fixed = TRUE),]
+    high <- dat2[grep("HIGH SCHOOL", dat2$school_name, ignore.case = TRUE, fixed = TRUE),]
     
+    arrange(high, desc(percent))
   })
    
 }
