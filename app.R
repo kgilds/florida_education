@@ -34,6 +34,7 @@ absences_2 <- select(absences_2, 2, 4:6)
 absences_2$enrollments <- as.numeric(absences_2$enrollments)
 absences_2$absent_21_plus <- as.numeric(absences_2$absent_21_plus)
 absences_2 <- mutate(absences_2, percent = absent_21_plus / enrollments)
+absences_2 <- mutate(absences_2, percent = percent *100)
 
 meta <- read_excel(absences, range = "A1:A2")
 
@@ -47,26 +48,21 @@ ui <- fluidPage(
   
   tabPanel("About",
            
-           list_group("Kevin", "Kevin"),
-           shinyLP::panel_div(),
+           #list_group("Kevin", "Kevin"),
            
-           wells("This Application takes a static spreadsheet file from a website and makes it dynamic. The spreadsheet file is from the Florida Department of Education and it is a survey of school enrollments and a count of students who missed 21 days or more of school during the 2015-2016 School year"),
-  
-           mainPanel(
-             
-             tableOutput("meta")
-             
-             #jumbotron("Florida School Absences: 21 days or more", "This")  
-             
-           )
+           shinyLP::panel_div(class_type= "primary", panel_title = "About", content = "This Application takes a static spreadsheet file from a website and makes it dynamic. The spreadsheet file is from the Florida Department of Education and it is a survey of school enrollments and a count of students who missed 21 days or more of school during the 2015-2016 School year"),
            
+           panel_div(class_type = "primary", panel_title = "How to use", content = "More information")
            
-           
-             
            ),
- 
+           
+          
+          
+  
   tabPanel("Data",
            
+           fluidPage(
+             
            # Sidebar with a slider input for number of bins 
            sidebarLayout(
              sidebarPanel(
@@ -74,37 +70,38 @@ ui <- fluidPage(
                            "School District",
                            c(unique(as.character(absences_2$district_name))))),
              
+             mainPanel(
+               
+               tabsetPanel(type = "tabs",
+                           tabPanel("All Schools", tableOutput("test")),
+                           tabPanel("Elementary Schools", tableOutput("elem")),
+                           tabPanel("Middle Schools", tableOutput("middle")),
+                           tabPanel("High Schools", tableOutput("high"))
+                           
+               )#tabsetpanels
+               
            
-                   
-           mainPanel(
            
-           tabsetPanel(type = "tabs",
-                       tabPanel("All Schools", tableOutput("test")),
-                       tabPanel("Elementary Schools", tableOutput("elem")),
-                       tabPanel("Middle Schools", tableOutput("middle")),
-                       tabPanel("High Schools", tableOutput("high"))
-                       
-           )
-          
+             
+             ) #mainPanel 2
+             
+           )#fluidpage 
+           
+ 
+  
   )
           
-  )
- 
+    )
+) 
  
           
-   
- 
-  
-  
-  
-  
-   
-      # Show a plot of the generated distribution
-      
        
-   )
-)
-)
+    )
+ 
+
+
+
+
 
 
 
@@ -181,7 +178,7 @@ server <- function(input, output) {
   
   output$high <- renderTable({
     dat2 <- dataInput()
-    high <- dat2[grep("HIGH", dat2$school_name, ignore.case = TRUE, fixed = TRUE),]
+    high <- dat2[grep("HIGH SCHOOL", dat2$school_name, ignore.case = TRUE, fixed = TRUE),]
     
     arrange(high, desc(percent))
   })
