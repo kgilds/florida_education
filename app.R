@@ -48,11 +48,11 @@ ui <- fluidPage(
   
   tabPanel("About",
            
-           #list_group("Kevin", "Kevin"),
+           #list_group("Kevin", "Kevin"),u 
            
-           shinyLP::panel_div(class_type= "primary", panel_title = "About", content = "This Application takes a static spreadsheet file from a website and makes it dynamic. The spreadsheet file is from the Florida Department of Education and it is a survey of school enrollments and a count of students who missed 21 days or more of school during the 2015-2016 School year"),
+           shinyLP::panel_div(class_type= "info", panel_title = "About", content = "This Application takes a static spreadsheet from the Florida Department of Education and makes it dynamic. The purpose of the application is to make it easier to browse the data.  The data displayed in the application consists of school enrollments, a count of students who missed 21 days or more of school during the 2015-2016 School year, and a percentage. The percent variable is calculated by the application. The spreadsheet displayed an * for schools with an enrollment with 10 or less students--in this application those schools are excluded."),
            
-           panel_div(class_type = "primary", panel_title = "How to use", content = "More information")
+           shinyLP::panel_div(class_type = "primary", panel_title = "How to use", content = "Click on the data tab to right and all the schools with data from the Alachua School District will emerge. To change the school district select the school district from the drop down menu on the top right of the application. The application also subsets school types by elementary schools, middle schools, and high schools. The data is presented with the variable percent in descending order so you may see the schools with the highest percent of students with 21 or more absences.")
            
            ),
            
@@ -164,14 +164,14 @@ server <- function(input, output) {
    
   output$elem <- renderTable({
     dat <- dataInput()
-    elem <- dat[grep("ELEMENTARY ", dat$school_name, ignore.case = TRUE, fixed = TRUE),]
+    elem <- dat[grep("ELEMENTARY SCHOOL", dat$school_name, ignore.case = TRUE, fixed = TRUE),]
       
     arrange(elem, desc(percent))
   })
   
   output$middle <- renderTable({
     dat1 <- dataInput()
-    middle <- dat1[grep("MIDDLE", dat1$school_name, ignore.case = TRUE, fixed = TRUE),]
+    middle <- dat1[grep("MIDDLE SCHOOL", dat1$school_name, ignore.case = TRUE, fixed = TRUE),]
   
     arrange(middle, desc(percent))
     })
