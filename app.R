@@ -58,7 +58,12 @@ ui <- fluidPage(
                                 
            shinyLP::panel_div(class_type= "primary", panel_title = "About", content = "This Application takes a static spreadsheet from the Florida Department of Education and makes it dynamic. The purpose of the application is to make it easier to browse the data.  The data displayed in the application consists of school enrollments, a count of students who missed 21 days or more of school during the 2015-2016 School year, and a percentage. The percent variable is calculated by the application. The spreadsheet displayed an * for schools with an enrollment with 10 or less students--in this application those schools are excluded."),
            
-           shinyLP::panel_div(class_type = "primary", panel_title = "How to use", content = "Click on the data tab to right and all the schools with data from the Alachua School District will emerge. To change the school district select the school district from the drop down menu on the top right of the application. The application also subsets school types by elementary schools, middle schools, and high schools. The data is presented with the variable percent in descending order so you may see the schools with the highest percent of students with 21 or more absences.")
+          
+           shinyLP::panel_div(class_type = "primary", panel_title = "Data Source", content =
+                                
+                                tags$a(href="http://www.fldoe.org/accountability/data-sys/edu-info-accountability-services/pk-12-public-school-data-pubs-reports/students.stml", "Florida Department of Education Website")),
+           
+            shinyLP::panel_div(class_type = "primary", panel_title = "How to use", content = "Click on the data tab to right and all the schools with data from the Alachua School District will emerge. To change the school district select the school district from the drop down menu on the top right of the application. The application also subsets school types by elementary schools, middle schools, and high schools. The data is presented with the variable percent in descending order so you may see the schools with the highest percent of students with 21 or more absences.")
            
            ),
            
