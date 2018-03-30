@@ -138,25 +138,44 @@ server <- function(input, output) {
    
    
    
-  output$elem <- DT::renderDataTable({
+  output$elem <- renderDataTable({
     dat <- dataInput()
-    elem <- dat[grep("ELEMENTARY SCHOOL", dat$school_name, ignore.case = TRUE, fixed = TRUE),]
+    
+    
       
-    dplyr::arrange(elem, desc(percent))
+    
+    
+    elem <- dat[grep("ELEMENTARY SCHOOL", dat$school_name, ignore.case = TRUE, fixed = TRUE),]
+    
+    elem <- DT::datatable(elem) %>%
+    
+   
+    formatPercentage('percent', 2)
+    
+    
+    #dplyr::arrange(elem, desc(percent))
+    
+    
   })
   
   output$middle <- DT::renderDataTable({
     dat1 <- dataInput()
     middle <- dat1[grep("MIDDLE SCHOOL", dat1$school_name, ignore.case = TRUE, fixed = TRUE),]
   
-    dplyr::arrange(middle, desc(percent))
+    middle <- DT::datatable(middle) %>%
+      formatPercentage('percent',2)
+    
+    #dplyr::arrange(middle, desc(percent))
     })
   
   output$high <- DT::renderDataTable({
     dat2 <- dataInput()
     high <- dat2[grep("HIGH SCHOOL", dat2$school_name, ignore.case = TRUE, fixed = TRUE),]
     
-    dplyr::arrange(high, desc(percent))
+    high <- DT:: datatable(high) %>%
+      formatPercentage('percent', 2)
+    
+    #dplyr::arrange(high, desc(percent))
   })
    
 }
