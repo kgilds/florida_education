@@ -30,7 +30,7 @@ absences_2$enrollments <- as.numeric(absences_2$enrollments) #Change data to num
 absences_2$absent_21_plus <- as.numeric(absences_2$absent_21_plus) #change data to numeric format
 
 absences_2 <- dplyr::mutate(absences_2, percent = absent_21_plus / enrollments) #calculate percent 
-absences_2 <- dplyr::mutate(absences_2, percent = percent *100) #Convert from decimal 
+#absences_2 <- dplyr::mutate(absences_2, percent = percent *100) #Convert from decimal 
 
 
 
@@ -129,7 +129,8 @@ server <- function(input, output) {
       
       #dplyr::arrange(all, desc(percent))
       
-      DT::datatable(all)
+      DT::datatable(all) %>%
+        formatPercentage('percent', 2)
       
       #arrange(flights, year, month, day)
       
