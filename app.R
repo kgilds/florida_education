@@ -79,10 +79,10 @@ ui <- fluidPage(theme = shinytheme("spacelab"),
              mainPanel(
                
                tabsetPanel(type = "tabs",
-                           tabPanel("All Schools", tableOutput("all")),
-                           tabPanel("Elementary Schools", tableOutput("elem")),
-                           tabPanel("Middle Schools", tableOutput("middle")),
-                           tabPanel("High Schools", tableOutput("high"))
+                           tabPanel("All Schools", DT::dataTableOutput("all")),
+                           tabPanel("Elementary Schools", DT::dataTableOutput("elem")),
+                           tabPanel("Middle Schools", DT::dataTableOutput("middle")),
+                           tabPanel("High Schools", DT::dataTableOutput("high"))
                            
                )#tabsetpanels
                
@@ -115,20 +115,21 @@ server <- function(input, output) {
     dplyr::filter(absences_2, district_name == input$school_district)
     
     
+    
   })
   
   
   
    
-   output$all <- renderTable({
-      # generate bins based on input$bins from ui.R
-      #test  <- filter(absences_2, district_name == input$school_district)
-     
+   output$all <- renderDataTable({
+      
       all<- dataInput()
       
       #test$percent <- percent(test$percent)
       
-      dplyr::arrange(all, desc(percent))
+      #dplyr::arrange(all, desc(percent))
+      
+      DT::datatable(all)
       
       #arrange(flights, year, month, day)
       
@@ -136,21 +137,21 @@ server <- function(input, output) {
    
    
    
-  output$elem <- renderTable({
+  output$elem <- DT::renderDataTable({
     dat <- dataInput()
     elem <- dat[grep("ELEMENTARY SCHOOL", dat$school_name, ignore.case = TRUE, fixed = TRUE),]
       
     dplyr::arrange(elem, desc(percent))
   })
   
-  output$middle <- renderTable({
+  output$middle <- DT::renderDataTable({
     dat1 <- dataInput()
     middle <- dat1[grep("MIDDLE SCHOOL", dat1$school_name, ignore.case = TRUE, fixed = TRUE),]
   
     dplyr::arrange(middle, desc(percent))
     })
   
-  output$high <- renderTable({
+  output$high <- DT::renderDataTable({
     dat2 <- dataInput()
     high <- dat2[grep("HIGH SCHOOL", dat2$school_name, ignore.case = TRUE, fixed = TRUE),]
     
