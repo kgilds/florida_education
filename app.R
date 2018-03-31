@@ -8,7 +8,7 @@ library(readxl)
 library(httr)
 library(janitor)
 library(formattable)
-
+library(DT)
 
 ############################Data Set up with Scripts#########################################
 
@@ -129,8 +129,17 @@ server <- function(input, output) {
       
       #dplyr::arrange(all, desc(percent))
       
-      DT::datatable(all) %>%
-        formatPercentage('percent', 2)
+      
+      DT::datatable(all, rownames = FALSE,  options =  list(order = list(list(4, "desc")))) %>%
+      
+      
+        formatPercentage('percent', 2) 
+        
+      
+      
+      #datatable(head(mtcars, 30), options = list(
+        #order = list(list(2, 'asc'), list(4, 'desc'))
+      #))
       
       #arrange(flights, year, month, day)
       
@@ -147,7 +156,7 @@ server <- function(input, output) {
     
     elem <- dat[grep("ELEMENTARY SCHOOL", dat$school_name, ignore.case = TRUE, fixed = TRUE),]
     
-    elem <- DT::datatable(elem) %>%
+    elem <- DT::datatable(elem, rownames = FALSE, options= list(order =list(4, "desc"))) %>%
     
    
     formatPercentage('percent', 2)
@@ -162,7 +171,7 @@ server <- function(input, output) {
     dat1 <- dataInput()
     middle <- dat1[grep("MIDDLE SCHOOL", dat1$school_name, ignore.case = TRUE, fixed = TRUE),]
   
-    middle <- DT::datatable(middle) %>%
+    middle <- DT::datatable(middle, rownames = FALSE, options = list(order=list(4, 'desc'))) %>%
       formatPercentage('percent',2)
     
     #dplyr::arrange(middle, desc(percent))
@@ -172,7 +181,7 @@ server <- function(input, output) {
     dat2 <- dataInput()
     high <- dat2[grep("HIGH SCHOOL", dat2$school_name, ignore.case = TRUE, fixed = TRUE),]
     
-    high <- DT:: datatable(high) %>%
+    high <- DT:: datatable(high, rownames= FALSE, options = list(order=list(4, "desc"))) %>%
       formatPercentage('percent', 2)
     
     #dplyr::arrange(high, desc(percent))
