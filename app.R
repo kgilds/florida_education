@@ -58,7 +58,7 @@ ui <- fluidPage(theme = shinytheme("spacelab"),
                                 
                                 tags$a(href="http://www.fldoe.org/accountability/data-sys/edu-info-accountability-services/pk-12-public-school-data-pubs-reports/students.stml", "Florida Department of Education Website")),
            
-            shinyLP::panel_div(class_type = "primary", panel_title = "How to use", content = "<ol typ='1'> <li>Click on the data link above and all the schools with data from the Alachua School District will display. </li> <li>  Choose to view different types of school by selecting the tab you want review--Elemantary, Middle, and High. </li> <li>To change the school district, select the school district from the drop down menu on the top left corner of the data application. </li> <ol/>")
+            shinyLP::panel_div(class_type = "primary", panel_title = "How to use", content = "<ol typ='1'> <li>Click on the data link above and all the schools with data from the Alachua School District will display. </li> <li>  Choose to view a different type of school by selecting the tab you want review--Elemantary, Middle, or High. </li> <li>To change the school district, select the school district from the drop down menu on the top left corner of the data application. </li> <ol/>")
            
            ),
            
